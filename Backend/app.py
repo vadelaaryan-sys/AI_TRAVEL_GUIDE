@@ -94,6 +94,10 @@ def generate_description(place, answer_type, language):
     )
     return response.text
     
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({"status": "AI Travel Guide Backend API is running!"})
+
 @app.route("/generate-audio-guide", methods=["POST"])
 def generate_audio_guide():
     data = request.json

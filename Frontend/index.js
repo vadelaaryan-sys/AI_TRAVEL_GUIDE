@@ -126,7 +126,7 @@ voiceButtons.forEach(btn => {
 // Generate Audio guide button Logic
 // REPLACE THIS WITH YOUR DEPLOYED RENDER BACKEND URL AFTER DEPLOYING ON RENDER
 // e.g. "https://ai-travel-guide-backend.onrender.com"
-const RENDER_BACKEND_URL = ""; 
+const RENDER_BACKEND_URL = "https://ai-travel-guide-t7fc.onrender.com"; 
 
 const BASE_URL = RENDER_BACKEND_URL || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
   ? "http://127.0.0.1:5000" 
