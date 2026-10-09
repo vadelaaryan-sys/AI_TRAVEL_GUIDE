@@ -100,23 +100,29 @@ def home():
 
 @app.route("/generate-audio-guide", methods=["POST"])
 def generate_audio_guide():
-    data = request.json
-    place = data["place"]
-    answer_type = data["answerType"]
-    language = data["language"]
-    voice_id = data["voiceId"]
-    locale = data["locale"]
+    try:
+        if not MURF_API_KEY or not GEMINI_API_KEY:
+            return jsonify({"error": "API keys (GEMINI_API_KEY / MURF_API_KEY) are missing in Render Environment Variables!"}), 500
 
+        data = request.json
+        place = data["place"]
+        answer_type = data["answerType"]
+        language = data["language"]
+        voice_id = data["voiceId"]
+        locale = data["locale"]
 
-    text_description = generate_description(place, answer_type, language)
-    audio_path = generate_speech(text_description, voice_id, locale)
-    audio_bytes = open(audio_path.name, "rb").read()
-    encoded_audio = base64.b64encode(audio_bytes).decode("utf-8")
+        text_description = generate_description(place, answer_type, language)
+        audio_path = generate_speech(text_description, voice_id, locale)
+        audio_bytes = open(audio_path.name, "rb").read()
+        encoded_audio = base64.b64encode(audio_bytes).decode("utf-8")
 
-    return {
-        "description": text_description,
-        "audioBase64": encoded_audio
-                }
+        return jsonify({
+            "description": text_description,
+            "audioBase64": encoded_audio
+        })
+    except Exception as e:
+        print("Error in generate_audio_guide:", str(e))
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
